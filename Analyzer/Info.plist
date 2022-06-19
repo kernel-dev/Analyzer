@@ -3,6 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>OSBundleLibraries</key>
-	<dict/>
+	<dict>
+		<key>as.vit9696.Lilu</key>
+		<string>1.6.1</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>20.5</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>20.5</string>
+	</dict>
 </dict>
 </plist>
