@@ -10,7 +10,7 @@
 #include <Headers/kern_api.hpp>
 #include "kern_analyzer.hpp"
 
-static Analyzer analyzer;
+static SystemAnalyzer analyzer;
 
 static const char *bootargOff[] {
     "-analoff"

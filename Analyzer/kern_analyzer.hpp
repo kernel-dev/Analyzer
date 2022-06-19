@@ -17,14 +17,9 @@
  *  @brief An instance for handling, extracting and
  *         constructing CPU & GPU information.
  */
-class Analyzer {
+class SystemAnalyzer {
     
 public:
-    /**
-     * @brief   Private self instance for callbacks
-     */
-    static Analyzer     *callbackAnalyzer;
-
     /**
      *  @brief  Obtains data, which conforms to
      *          the data defined in the `CPU`

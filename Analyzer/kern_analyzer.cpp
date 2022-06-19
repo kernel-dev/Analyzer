@@ -15,9 +15,7 @@
 #include "kern_data.hpp"
 #include "kern_analyzer.hpp"
 
-Analyzer *Analyzer::callbackAnalyzer;
-
-struct GPU *Analyzer::getGpuInfo()
+struct GPU *SystemAnalyzer::getGpuInfo()
 {
     const OSSymbol *keyClass  = OSSymbol::withCString("IOPCIClassMatch");
     const OSString *valClass  = OSString::withCString("0x03000000&0xff000000");
