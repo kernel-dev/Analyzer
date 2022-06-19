@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E00A8DE285EBDCB005804C2 /* plugin_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E00A8DD285EBDCB005804C2 /* plugin_start.cpp */; };
 		1E697457285BC0F300C9E53A /* kern_analyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E697456285BC0F300C9E53A /* kern_analyzer.cpp */; };
 		1E697463285BC15A00C9E53A /* kern_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E697462285BC15A00C9E53A /* kern_start.cpp */; };
-		1E697468285BC1D800C9E53A /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E697467285BC1D800C9E53A /* libkmod.a */; };
+		1EF3D814285EBEFC0084A8AC /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF3D813285EBEFC0084A8AC /* libkmod.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E00A8DD285EBDCB005804C2 /* plugin_start.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = plugin_start.cpp; path = Lilu.kext/Contents/Resources/Library/plugin_start.cpp; sourceTree = "<group>"; };
 		1E697453285BC0F300C9E53A /* Analyzer.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Analyzer.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E697456285BC0F300C9E53A /* kern_analyzer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_analyzer.cpp; sourceTree = "<group>"; };
 		1E697458285BC0F300C9E53A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -20,6 +22,7 @@
 		1E697464285BC16F00C9E53A /* kern_analyzer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_analyzer.hpp; sourceTree = "<group>"; };
 		1E697465285BC17A00C9E53A /* kern_data.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_data.hpp; sourceTree = "<group>"; };
 		1E697467285BC1D800C9E53A /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = usr/lib/libkmod.a; sourceTree = SDKROOT; };
+		1EF3D813285EBEFC0084A8AC /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,7 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E697468285BC1D800C9E53A /* libkmod.a in Frameworks */,
+				1EF3D814285EBEFC0084A8AC /* libkmod.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +40,7 @@
 		1E697449285BC0F300C9E53A = {
 			isa = PBXGroup;
 			children = (
+				1E00A8DD285EBDCB005804C2 /* plugin_start.cpp */,
 				1E697455285BC0F300C9E53A /* Analyzer */,
 				1E697454285BC0F300C9E53A /* Products */,
 				1E697466285BC1D800C9E53A /* Frameworks */,
@@ -66,6 +70,7 @@
 		1E697466285BC1D800C9E53A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1EF3D813285EBEFC0084A8AC /* libkmod.a */,
 				1E697467285BC1D800C9E53A /* libkmod.a */,
 			);
 			name = Frameworks;
@@ -151,6 +156,7 @@
 			files = (
 				1E697457285BC0F300C9E53A /* kern_analyzer.cpp in Sources */,
 				1E697463285BC15A00C9E53A /* kern_start.cpp in Sources */,
+				1E00A8DE285EBDCB005804C2 /* plugin_start.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +286,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MODULE_VERSION=$(MODULE_VERSION)",
+					"PRODUCT_NAME=$(PRODUCT_NAME)",
+					"$(inherited)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Lilu.kext/Contents/Resources";
 				INFOPLIST_FILE = Analyzer/Info.plist;
@@ -304,6 +315,10 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MODULE_VERSION=$(MODULE_VERSION)",
+					"PRODUCT_NAME=$(PRODUCT_NAME)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Lilu.kext/Contents/Resources";
 				INFOPLIST_FILE = Analyzer/Info.plist;
