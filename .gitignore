@@ -5,3 +5,4 @@ builds/
 MacKernelSDK/
 Lilu.kext/
 *.xcworkspace/
+.DS_Store
