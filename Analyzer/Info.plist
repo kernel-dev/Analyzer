@@ -2,14 +2,44 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>OSBundleCompatibleVersion</key>
+	<string>1.0</string>
+	<key>CFBundleSignatures</key>
+	<string>????</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>com.KernelWanderers.Analyzer</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			<key>IOClass</key>
+			<string>$(PRODUCT_NAME:rfc1034identifier)</string>
+			<key>IOMatchCategory</key>
+			<string>$(PRODUCT_NAME:rfc1034identifier)</string>
+			<key>IOProviderClass</key>
+			<string>IOResources</string>
+			<key>IOResourceMatch</key>
+			<string>IOKit</string>
+		</dict>
+	</dict>
 	<key>OSBundleLibraries</key>
 	<dict>
+		<key>com.apple.kpi.bsd</key>
+		<string>12.0</string>
+		<key>com.apple.kpi.dsep</key>
+		<string>12.0</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>12.0</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>12.0</string>
+		<key>com.apple.kpi.mach</key>
+		<string>12.0</string>
+		<key>com.apple.kpi.unsupported</key>
+		<string>12.0</string>
+		<key>com.apple.iokit.IOPCIFamily</key>
+		<string>2.9</string>
 		<key>as.vit9696.Lilu</key>
 		<string>1.6.1</string>
-		<key>com.apple.kpi.iokit</key>
-		<string>20.5</string>
-		<key>com.apple.kpi.libkern</key>
-		<string>20.5</string>
 	</dict>
 </dict>
 </plist>
