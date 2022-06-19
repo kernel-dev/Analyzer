@@ -57,7 +57,6 @@ struct SystemData
 {
     int             cpus;
     int             gpus;
-    int             agx;
 };
 
 #endif /* kern_data_h */
