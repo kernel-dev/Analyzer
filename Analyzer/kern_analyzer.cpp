@@ -17,44 +17,80 @@
 
 struct GPU *SystemAnalyzer::getGpuInfo()
 {
-    const OSSymbol *keyClass  = OSSymbol::withCString("IOPCIClassMatch");
-    const OSString *valClass  = OSString::withCString("0x03000000&0xff000000");
-
-    OSIterator *iter = IOService::getMatchingServices(IOService::propertyMatching(keyClass, valClass));
-    IOPCIDevice *device;
+    DBGLOG(
+        "analyzer",
+        "Instantiating dictionary with IOPCIClassMatch: 0x03000000&0xff000000");
     
-    while ( (device = (IOPCIDevice *)iter->getNextObject()) )
+    OSObject *val = OSString::withCString("0x03000000&0xff000000");
+    
+    if ( val == NULL ) {
+        DBGLOG(
+            "analyzer",
+            "Unable to instantiate PCI class match value - val=NULL");
+        
+        return NULL;
+    }
+    
+    OSDictionary *dict = OSDictionary::withCapacity(1);
+
+    dict->setObject(kIOPCIClassMatchKey, val);
+    
+    if ( dict == NULL ) {
+        OSSafeReleaseNULL(val);
+        
+        DBGLOG(
+            "analyzer",
+            "Failed to instantiate dictionary for match - dict=NULL");
+        
+        return NULL;
+    }
+
+    OSIterator *iter = IOService::getMatchingServices(dict);
+    
+    if ( iter == NULL ) {
+        OSSafeReleaseNULL(dict);
+        OSSafeReleaseNULL(val);
+        
+        DBGLOG(
+            "analyzer",
+            "Failed to obtain iterator from IOPCIClassMatch match - iter=NULL");
+        
+        return NULL;
+    }
+    
+    DBGLOG(
+        "analyzer",
+        "Successfully obtained iterator from IOPCIClassMatch match - Iterator: %d",
+        iter);
+    
+    IOPCIDevice *device = NULL;
+    
+    while ( (device = OSDynamicCast(IOPCIDevice, iter->getNextObject())) != NULL )
     {
-//        uint32_t deviceId;
-//        uint32_t vendorId;
-//
-//        // Device and Vendor ID
-//        device->ConfigurationRead32(kIOPCIConfigurationOffsetDeviceID, &deviceId);
-//        device->ConfigurationRead32(kIOPCIConfigurationOffsetVendorID, &vendorId);
+        // Device and Vendor ID
+        uint32_t deviceId = device->configRead32(kIOPCIConfigurationOffsetDeviceID);
+        uint32_t vendorId = device->configRead32(kIOPCIConfigurationOffsetVendorID);
+        
+        DBGLOG(
+            "analyzer",
+            "Device ID: %d - Vendor ID: %d",
+            deviceId, vendorId);
         
         // ACPI Plane
         UInt8 dev  = device->getDeviceNumber();
         UInt8 func = device->getFunctionNumber();
         const char *childLocation = device->getChildEntry(gIOServicePlane)->getLocation();
         
-        SYSLOG(
+        DBGLOG(
             "analyzer",
-            "LOCATION VALUE: %s",
-            childLocation);
-        
-        SYSLOG(
-            "analyzer",
-            "DEV NUM: %d ",
-            dev);
-        
-        SYSLOG(
-            "analyzer",
-            "FUNC NUM: %d",
-            func);
+            "LOCATION VALUE: %s - DEV NUM: %d - FUNC NUM: %d",
+            childLocation, dev, func);
         
     }
     
     OSSafeReleaseNULL(iter);
+    OSSafeReleaseNULL(dict);
+    OSSafeReleaseNULL(val);
     
     return NULL;
 };
