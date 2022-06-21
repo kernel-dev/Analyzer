@@ -17,7 +17,7 @@ static const char *bootargOff[] {
 };
 
 static const char *bootargDebug[] {
-    "-analdbg"
+    "-debugmesenpai"
 };
 
 static const char *bootargBeta[] {
@@ -40,6 +40,6 @@ PluginConfiguration ADDPR(config)
     KernelVersion::Tiger,
     KernelVersion::Ventura,
     []() {
-        analyzer.getGpuInfo();
+        analyzer.getCpuInfo();
     }
 };
