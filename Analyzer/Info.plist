@@ -4,22 +4,42 @@
 <dict>
 	<key>OSBundleCompatibleVersion</key>
 	<string>1.0</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MODULE_VERSION)</string>
 	<key>CFBundleSignatures</key>
 	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(MODULE_VERSION)</string>
 	<key>IOKitPersonalities</key>
 	<dict>
-		<key>com.KernelWanderers.Analyzer</key>
+		<key>PCIDeviceStub</key>
 		<dict>
 			<key>CFBundleIdentifier</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			<key>IOClass</key>
-			<string>$(PRODUCT_NAME:rfc1034identifier)</string>
+			<string>PCIDeviceStub</string>
 			<key>IOMatchCategory</key>
-			<string>$(PRODUCT_NAME:rfc1034identifier)</string>
+			<string>IOFramebuffer</string>
+			<key>IOPCIClassMatch</key>
+			<string>0x03000000&amp;0xff000000</string>
+			<key>IOPCIMatch</key>
+			<string>0x00001002&amp;0x0000ffff</string>
+			<key>IOProbeScore</key>
+			<integer>300000</integer>
 			<key>IOProviderClass</key>
-			<string>IOResources</string>
-			<key>IOResourceMatch</key>
-			<string>IOKit</string>
+			<string>IOPCIDevice</string>
 		</dict>
 	</dict>
 	<key>OSBundleLibraries</key>
