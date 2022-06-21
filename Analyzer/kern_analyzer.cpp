@@ -6,91 +6,44 @@
 //  Copyright © 2022 Kernel. All rights reserved.
 //
 
-#include <IOKit/pci/IOPCIDevice.h>
-#include <IOKit/IOService.h>
-#include <libkern/c++/OSDictionary.h>
-#include <libkern/c++/OSString.h>
-#include <libkern/sysctl.h>
-#include <Headers/kern_util.hpp>
-#include "kern_data.hpp"
 #include "kern_analyzer.hpp"
 
-struct GPU *SystemAnalyzer::getGpuInfo()
+#include <Headers/kern_util.hpp>
+#include <i386/cpuid.h>
+
+void SystemAnalyzer::getCpuInfo()
 {
-    DBGLOG(
-        "analyzer",
-        "Instantiating dictionary with IOPCIClassMatch: 0x03000000&0xff000000");
+    DBGLOG("analyzer", "cpu: obtaining data via cpuid_info()");
     
-    OSObject *val = OSString::withCString("0x03000000&0xff000000");
+    i386_cpu_info_t *cpu = cpuid_info();
     
-    if ( val == NULL ) {
+    if ( cpu == NULL ) {
         DBGLOG(
-            "analyzer",
-            "Unable to instantiate PCI class match value - val=NULL");
+            "anal_stub",
+            "cpu: failed to obtain CPUID data ???");
         
-        return NULL;
+        return;
     }
     
-    OSDictionary *dict = OSDictionary::withCapacity(1);
-
-    dict->setObject(kIOPCIClassMatchKey, val);
+    SYSLOG(
+        "anal_stub",
+        "cpu: Model: %s",
+        cpu->cpuid_brand_string);
     
-    if ( dict == NULL ) {
-        OSSafeReleaseNULL(val);
-        
-        DBGLOG(
-            "analyzer",
-            "Failed to instantiate dictionary for match - dict=NULL");
-        
-        return NULL;
-    }
-
-    OSIterator *iter = IOService::getMatchingServices(dict);
+    SYSLOG(
+        "anal_stub",
+        "cpu: Cores: %d - Threads: %d",
+        cpu->core_count, cpu->thread_count);
     
-    if ( iter == NULL ) {
-        OSSafeReleaseNULL(dict);
-        OSSafeReleaseNULL(val);
-        
-        DBGLOG(
-            "analyzer",
-            "Failed to obtain iterator from IOPCIClassMatch match - iter=NULL");
-        
-        return NULL;
-    }
+    char features[512];
     
-    DBGLOG(
-        "analyzer",
-        "Successfully obtained iterator from IOPCIClassMatch match - Iterator: %d",
-        iter);
+    SYSLOG(
+        "anal_stub",
+        "cpu: Features: %s",
+           cpuid_get_feature_names(cpuid_features(), features, sizeof(features)));
     
-    IOPCIDevice *device = NULL;
-    
-    while ( (device = OSDynamicCast(IOPCIDevice, iter->getNextObject())) != NULL )
-    {
-        // Device and Vendor ID
-        uint32_t deviceId = device->configRead32(kIOPCIConfigurationOffsetDeviceID);
-        uint32_t vendorId = device->configRead32(kIOPCIConfigurationOffsetVendorID);
-        
-        DBGLOG(
-            "analyzer",
-            "Device ID: %d - Vendor ID: %d",
-            deviceId, vendorId);
-        
-        // ACPI Plane
-        UInt8 dev  = device->getDeviceNumber();
-        UInt8 func = device->getFunctionNumber();
-        const char *childLocation = device->getChildEntry(gIOServicePlane)->getLocation();
-        
-        DBGLOG(
-            "analyzer",
-            "LOCATION VALUE: %s - DEV NUM: %d - FUNC NUM: %d",
-            childLocation, dev, func);
-        
-    }
-    
-    OSSafeReleaseNULL(iter);
-    OSSafeReleaseNULL(dict);
-    OSSafeReleaseNULL(val);
-    
-    return NULL;
-};
+    SYSLOG(
+        "anal_stub",
+        "cpu: leaf7_features: %s",
+        cpuid_get_feature_names(cpuid_leaf7_features(), features, sizeof(features)));
+}
