@@ -5,7 +5,7 @@
 //  Copyright © 2022 Kernel. All rights reserved.
 //
 
-#include "kern_device_stub.hpp"
+#include "kern_amd_stub.hpp"
 
 #include <Headers/kern_util.hpp>
 #include <IOKit/IOService.h>
@@ -23,32 +23,33 @@
 // I can probe the device and read the model, device id,
 // vendor id, PCI locations, etc.
 
-OSDefineMetaClassAndStructors(PCIDeviceStub, IOService);
+// AMD GPU device stub
+OSDefineMetaClassAndStructors(AMDStub, IOService);
 
-IOService *PCIDeviceStub::probe(IOService *provider, SInt32 *score)
+IOService *AMDStub::probe(IOService *provider, SInt32 *score)
 {
     IOPCIDevice *pciDevice = OSDynamicCast(IOPCIDevice, provider);
     if ( pciDevice == NULL )
     {
-        DBGLOG("anal_stub", "probe: pciDevice is NULL - aborting");
+        DBGLOG("amd_stub", "probe: pciDevice is NULL - aborting");
         return nullptr;
     }
     
-    DBGLOG("anal_stub", "probe: obtaining pci device model");
+    DBGLOG("amd_stub", "probe: obtaining pci device model");
     
     OSString *modelProp = OSDynamicCast(OSString, pciDevice->getProperty("model"));
     
-    if ( modelProp == NULL ) DBGLOG("anal_stub", "probe: failed to obtain pci device model");
+    if ( modelProp == NULL ) DBGLOG("amd_stub", "probe: failed to obtain pci device model");
     else {
         const char *model = modelProp->getCStringNoCopy();
         
         DBGLOG(
-            "anal_stub",
+            "amd_stub",
             "probe: obtained model: %s",
             model ? model : "UNKNOWN");
     }
    
-    DBGLOG("anal_stub", "probe: attempting to obtain device and vendor ids");
+    DBGLOG("amd_stub", "probe: attempting to obtain device and vendor ids");
     
     // This actually returns both IDs, in a single integer.
     //
@@ -60,7 +61,7 @@ IOService *PCIDeviceStub::probe(IOService *provider, SInt32 *score)
     uint32_t vendorId = ids & 0xFFFF;
     
     SYSLOG(
-        "anal_stub",
+        "amd_stub",
         "probe: Device ID: 0x%x - Vendor ID: 0x%x",
         deviceId, vendorId);
     
@@ -68,20 +69,20 @@ IOService *PCIDeviceStub::probe(IOService *provider, SInt32 *score)
     const char *path = locationSymbol->getCStringNoCopy();
     
     DBGLOG(
-        "anal_stub",
+        "amd_stub",
         "probe: location in plane: %s",
         path ? path : "UNKNOWN");
     
     locationSymbol->release();
     
-    DBGLOG("anal_stub", "probe: finalized probe, letting real driver take over");
+    DBGLOG("amd_stub", "probe: finalized probe, letting real driver take over");
 
     // Must mark as failed so that the original driver can take over.
     return nullptr;
-}
+} // AMDStub::probe()
 
-bool PCIDeviceStub::start(IOService *provider)
+bool AMDStub::start(IOService *provider)
 {
-    SYSLOG("anal_stub", "start: shouldn't be enabled - aborting");
+    SYSLOG("amd_stub", "start: shouldn't be enabled - aborting");
     return false;
-}
+} // AMDStub::start()

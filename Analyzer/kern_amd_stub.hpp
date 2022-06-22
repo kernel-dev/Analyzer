@@ -5,17 +5,17 @@
 //  Copyright © 2022 Kernel. All rights reserved.
 //
 
-#ifndef KERN_DEVICE_STUB_H
-#define KERN_DEVICE_STUB_H
+#ifndef kern_amd_stub_h
+#define kern_amd_stub_h
 
 #include <Headers/kern_util.hpp>
 #include <IOKit/IOService.h>
 
-class EXPORT PCIDeviceStub : public IOService {
-    OSDeclareDefaultStructors(PCIDeviceStub);
+class EXPORT AMDStub : public IOService {
+    OSDeclareDefaultStructors(AMDStub);
 public:
     IOService *probe(IOService *provider, SInt32 *score) override;
     bool start(IOService *provider) override;
 };
 
-#endif /* kern_device_stub.h */
+#endif /* kern_amd_stub.h */
