@@ -10,8 +10,12 @@
 		1E00A8DE285EBDCB005804C2 /* plugin_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E00A8DD285EBDCB005804C2 /* plugin_start.cpp */; };
 		1E697457285BC0F300C9E53A /* kern_analyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E697456285BC0F300C9E53A /* kern_analyzer.cpp */; };
 		1E697463285BC15A00C9E53A /* kern_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E697462285BC15A00C9E53A /* kern_start.cpp */; };
-		1EA3C4CE285FDBD9001FFA59 /* kern_device_stub.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3C4CD285FDBD9001FFA59 /* kern_device_stub.hpp */; };
-		1EA3C4D0285FDE58001FFA59 /* kern_device_stub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3C4CF285FDE58001FFA59 /* kern_device_stub.cpp */; };
+		1EA3C4CE285FDBD9001FFA59 /* kern_amd_stub.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3C4CD285FDBD9001FFA59 /* kern_amd_stub.hpp */; };
+		1EA3C4D0285FDE58001FFA59 /* kern_amd_stub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3C4CF285FDE58001FFA59 /* kern_amd_stub.cpp */; };
+		1ECBD02D2862B55C0086568D /* kern_nv_stub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1ECBD02B2862B55C0086568D /* kern_nv_stub.cpp */; };
+		1ECBD02E2862B55C0086568D /* kern_nv_stub.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1ECBD02C2862B55C0086568D /* kern_nv_stub.hpp */; };
+		1ECBD0312862B5A50086568D /* kern_intel_stub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1ECBD02F2862B5A50086568D /* kern_intel_stub.cpp */; };
+		1ECBD0322862B5A50086568D /* kern_intel_stub.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1ECBD0302862B5A50086568D /* kern_intel_stub.hpp */; };
 		1EF3D814285EBEFC0084A8AC /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF3D813285EBEFC0084A8AC /* libkmod.a */; };
 /* End PBXBuildFile section */
 
@@ -23,8 +27,12 @@
 		1E697462285BC15A00C9E53A /* kern_start.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_start.cpp; sourceTree = "<group>"; };
 		1E697464285BC16F00C9E53A /* kern_analyzer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_analyzer.hpp; sourceTree = "<group>"; };
 		1E697467285BC1D800C9E53A /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = usr/lib/libkmod.a; sourceTree = SDKROOT; };
-		1EA3C4CD285FDBD9001FFA59 /* kern_device_stub.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_device_stub.hpp; sourceTree = "<group>"; };
-		1EA3C4CF285FDE58001FFA59 /* kern_device_stub.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_device_stub.cpp; sourceTree = "<group>"; };
+		1EA3C4CD285FDBD9001FFA59 /* kern_amd_stub.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_amd_stub.hpp; sourceTree = "<group>"; };
+		1EA3C4CF285FDE58001FFA59 /* kern_amd_stub.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_amd_stub.cpp; sourceTree = "<group>"; };
+		1ECBD02B2862B55C0086568D /* kern_nv_stub.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_nv_stub.cpp; sourceTree = "<group>"; };
+		1ECBD02C2862B55C0086568D /* kern_nv_stub.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_nv_stub.hpp; sourceTree = "<group>"; };
+		1ECBD02F2862B5A50086568D /* kern_intel_stub.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_intel_stub.cpp; sourceTree = "<group>"; };
+		1ECBD0302862B5A50086568D /* kern_intel_stub.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_intel_stub.hpp; sourceTree = "<group>"; };
 		1EF3D813285EBEFC0084A8AC /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,8 +71,12 @@
 			children = (
 				1E697456285BC0F300C9E53A /* kern_analyzer.cpp */,
 				1E697458285BC0F300C9E53A /* Info.plist */,
-				1EA3C4CD285FDBD9001FFA59 /* kern_device_stub.hpp */,
-				1EA3C4CF285FDE58001FFA59 /* kern_device_stub.cpp */,
+				1ECBD02B2862B55C0086568D /* kern_nv_stub.cpp */,
+				1ECBD02C2862B55C0086568D /* kern_nv_stub.hpp */,
+				1EA3C4CD285FDBD9001FFA59 /* kern_amd_stub.hpp */,
+				1EA3C4CF285FDE58001FFA59 /* kern_amd_stub.cpp */,
+				1ECBD02F2862B5A50086568D /* kern_intel_stub.cpp */,
+				1ECBD0302862B5A50086568D /* kern_intel_stub.hpp */,
 				1E697462285BC15A00C9E53A /* kern_start.cpp */,
 				1E697464285BC16F00C9E53A /* kern_analyzer.hpp */,
 			);
@@ -87,6 +99,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ECBD02E2862B55C0086568D /* kern_nv_stub.hpp in Headers */,
+				1ECBD0322862B5A50086568D /* kern_intel_stub.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,10 +173,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E697457285BC0F300C9E53A /* kern_analyzer.cpp in Sources */,
-				1EA3C4CE285FDBD9001FFA59 /* kern_device_stub.hpp in Sources */,
+				1EA3C4CE285FDBD9001FFA59 /* kern_amd_stub.hpp in Sources */,
 				1E697463285BC15A00C9E53A /* kern_start.cpp in Sources */,
 				1E00A8DE285EBDCB005804C2 /* plugin_start.cpp in Sources */,
-				1EA3C4D0285FDE58001FFA59 /* kern_device_stub.cpp in Sources */,
+				1ECBD0312862B5A50086568D /* kern_intel_stub.cpp in Sources */,
+				1EA3C4D0285FDE58001FFA59 /* kern_amd_stub.cpp in Sources */,
+				1ECBD02D2862B55C0086568D /* kern_nv_stub.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
