@@ -10,19 +10,14 @@
 #define kern_analyzer_h
 
 /**
- *  @brief An instance for handling, extracting and
- *         constructing CPU & GPU information.
+ *  @brief An instance for calling
+ *         any relevant methods
  */
 class SystemAnalyzer {
-    
+
 public:
-    /**
-     *  @brief  Obtains data, which conforms to
-     *          the data defined in the `CPU`
-     *          structure, of the current machine's
-     *          CPU(s), and prints it.
-     */
-    void                getCpuInfo();
+    void init();
+    void deinit();
 };
 
 #endif /* kern_analyzer_h */

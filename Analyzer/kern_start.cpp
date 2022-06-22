@@ -40,6 +40,6 @@ PluginConfiguration ADDPR(config)
     KernelVersion::Tiger,
     KernelVersion::Ventura,
     []() {
-        analyzer.getCpuInfo();
+        analyzer.init();
     }
 };
