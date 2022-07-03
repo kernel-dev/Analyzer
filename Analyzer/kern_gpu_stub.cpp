@@ -1,11 +1,11 @@
 //
-//  kern_device_stub.cpp
+//  kern_gpu_stub.cpp
 //  Analyzer
 //
 //  Copyright © 2022 Kernel. All rights reserved.
 //
 
-#include "kern_amd_stub.hpp"
+#include "kern_gpu_stub.hpp"
 
 #include <Headers/kern_util.hpp>
 #include <IOKit/IOService.h>
@@ -20,36 +20,36 @@
 // The current approach is that I have a PCI device stub
 // in place, where the kernel will attach the PCI device
 // (hopefully the GPU) to that stub, and from there-on,
-// I can probe the device and read the model, device id,
+// the device can be probed and I can read the model, device id,
 // vendor id, PCI locations, etc.
 
-// AMD GPU device stub
-OSDefineMetaClassAndStructors(AMDStub, IOService);
+// GPU device stub
+OSDefineMetaClassAndStructors(GPUStub, IOService);
 
-IOService *AMDStub::probe(IOService *provider, SInt32 *score)
+IOService *GPUStub::probe(IOService *provider, SInt32 *score)
 {
     IOPCIDevice *pciDevice = OSDynamicCast(IOPCIDevice, provider);
     if ( pciDevice == NULL )
     {
-        DBGLOG("amd_stub", "probe: pciDevice is NULL - aborting");
+        DBGLOG("gpu_stub", "probe: pciDevice is NULL - aborting");
         return nullptr;
     }
     
-    DBGLOG("amd_stub", "probe: obtaining pci device model");
+    DBGLOG("gpu_stub", "probe: obtaining pci device model");
     
     OSString *modelProp = OSDynamicCast(OSString, pciDevice->getProperty("model"));
     
-    if ( modelProp == NULL ) DBGLOG("amd_stub", "probe: failed to obtain pci device model");
+    if ( modelProp == NULL ) DBGLOG("gpu_stub", "probe: failed to obtain pci device model");
     else {
         const char *model = modelProp->getCStringNoCopy();
         
         DBGLOG(
-            "amd_stub",
+            "gpu_stub",
             "probe: obtained model: %s",
-            model ? model : "UNKNOWN");
+            model != NULL ? model : "UNKNOWN");
     }
    
-    DBGLOG("amd_stub", "probe: attempting to obtain device and vendor ids");
+    DBGLOG("gpu_stub", "probe: attempting to obtain device and vendor ids");
     
     // This actually returns both IDs, in a single integer.
     //
@@ -61,28 +61,34 @@ IOService *AMDStub::probe(IOService *provider, SInt32 *score)
     uint32_t vendorId = ids & 0xFFFF;
     
     SYSLOG(
-        "amd_stub",
+        "gpu_stub",
         "probe: Device ID: 0x%x - Vendor ID: 0x%x",
         deviceId, vendorId);
     
     const OSSymbol *locationSymbol = pciDevice->copyLocation(gIOACPIPlane);
-    const char *path = locationSymbol->getCStringNoCopy();
     
-    DBGLOG(
-        "amd_stub",
-        "probe: location in plane: %s",
-        path ? path : "UNKNOWN");
+    if ( locationSymbol != NULL ) {
+        const char *path = locationSymbol->getCStringNoCopy();
+        
+        SYSLOG(
+            "gpu_stub",
+            "probe: location in plane: %s",
+            path != NULL ? path : "UNKNOWN");
+    } else
+        DBGLOG(
+            "gpu_stub",
+            "probe: failed to obtain location in plane - ignoring");
     
-    locationSymbol->release();
+    OSSafeReleaseNULL(locationSymbol);
     
-    DBGLOG("amd_stub", "probe: finalized probe, letting real driver take over");
+    DBGLOG("gpu_stub", "probe: finalized probe, letting real driver take over");
 
     // Must mark as failed so that the original driver can take over.
     return nullptr;
-} // AMDStub::probe()
+} // GPUStub::probe()
 
-bool AMDStub::start(IOService *provider)
+bool GPUStub::start(IOService *provider)
 {
-    SYSLOG("amd_stub", "start: shouldn't be enabled - aborting");
+    SYSLOG("gpu_stub", "start: shouldn't be enabled - aborting");
     return false;
-} // AMDStub::start()
+} // GPUStub::start()

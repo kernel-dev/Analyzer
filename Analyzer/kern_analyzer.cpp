@@ -7,10 +7,7 @@
 //
 
 #include "kern_analyzer.hpp"
-#include "kern_cpu.hpp"
 
-void SystemAnalyzer::init() {
-    cpuInfo();
-}
+void SystemAnalyzer::init() {}
 
 void SystemAnalyzer::deinit() {}
