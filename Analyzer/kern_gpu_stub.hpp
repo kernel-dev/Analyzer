@@ -1,3 +1,4 @@
+// -*- lsst-c++ -*-
 //
 //  kern_gpu_stub.hpp
 //  Analyzer

@@ -1,3 +1,4 @@
+// -*- lsst-c++ -*-
 //
 //  kern_gpu_stub.cpp
 //  Analyzer
@@ -6,11 +7,14 @@
 //
 
 #include "kern_gpu_stub.hpp"
+#include "kern_pci_utils.hpp"
 
 #include <Headers/kern_util.hpp>
 #include <IOKit/IOService.h>
 #include <IOKit/pci/IOPCIDevice.h>
 #include <IOKit/acpi/IOACPITypes.h>
+#include <IOKit/IODeviceTreeSupport.h>
+#include <IOKit/IOPlatformExpert.h>
 #include <libkern/libkern.h>
 
 // Due to the limitations of Lilu, I had to take this
@@ -28,25 +32,44 @@ OSDefineMetaClassAndStructors(GPUStub, IOService);
 
 IOService *GPUStub::probe(IOService *provider, SInt32 *score)
 {
-    IOPCIDevice *pciDevice = OSDynamicCast(IOPCIDevice, provider);
-    if ( pciDevice == NULL )
+    auto pciDevice = OSDynamicCast(IOPCIDevice, provider);
+    if (!pciDevice)
     {
         DBGLOG("gpu_stub", "probe: pciDevice is NULL - aborting");
         return nullptr;
     }
     
-    DBGLOG("gpu_stub", "probe: obtaining pci device model");
+    DBGLOG("gpu_stub", "probe: attempting to obtain pci device model");
     
-    OSString *modelProp = OSDynamicCast(OSString, pciDevice->getProperty("model"));
+    auto modelProp = pciDevice->copyProperty("model");
     
-    if ( modelProp == NULL ) DBGLOG("gpu_stub", "probe: failed to obtain pci device model");
+    if (!modelProp) DBGLOG("gpu_stub", "probe: failed to obtain pci device model property");
     else {
-        const char *model = modelProp->getCStringNoCopy();
+        auto modelData = OSDynamicCast(OSData, modelProp);
         
-        DBGLOG(
-            "gpu_stub",
-            "probe: obtained model: %s",
-            model != NULL ? model : "UNKNOWN");
+        if (!modelData) {
+            DBGLOG("gpu_stub", "probe: failed to cast OSObject -> OSData - ignoring");
+        } else {
+            auto bytes = modelData->getBytesNoCopy();
+            
+            if (!bytes) DBGLOG("gpu_stub", "probe: failed to get bytes for property");
+            else {
+                unsigned int length = modelData->getLength();
+                char *model = (char *)IOMalloc(length + 1);
+                
+                memcpy(model, bytes, length);
+                model[length] = '\0';
+                
+                SYSLOG(
+                    "gpu_stub",
+                    "probe: pci device model: %s",
+                    model);
+                
+                IOFree(model, length + 1);
+            }
+        }
+        
+        modelProp->release();
     }
    
     DBGLOG("gpu_stub", "probe: attempting to obtain device and vendor ids");
@@ -55,7 +78,7 @@ IOService *GPUStub::probe(IOService *provider, SInt32 *score)
     //
     // So we extract the first 4 hex values as follows:
     //      - vendor ID: bitwise AND with '0xFFFF' (65535)
-    //      - device ID: right-shift 16 times, alongisde bitwise AND with '0xFFFF'
+    //      - device ID: right-shift 16 times, alongside bitwise AND with '0xFFFF'
     uint32_t ids = pciDevice->configRead32(kIOPCIConfigurationOffsetVendorID);
     uint32_t deviceId = ids >> 16 & 0xFFFF;
     uint32_t vendorId = ids & 0xFFFF;
@@ -65,23 +88,57 @@ IOService *GPUStub::probe(IOService *provider, SInt32 *score)
         "probe: Device ID: 0x%x - Vendor ID: 0x%x",
         deviceId, vendorId);
     
-    const OSSymbol *locationSymbol = pciDevice->copyLocation(gIOACPIPlane);
+    DBGLOG("gpu_stub", "probe: copying device's acpi path");
     
-    if ( locationSymbol != NULL ) {
-        const char *path = locationSymbol->getCStringNoCopy();
+    auto pathSymbol = pciDevice->copyProperty("acpi-path");
+    
+    if (!pathSymbol) DBGLOG("gpu_stub", "probe: acpi path is NULL – ignoring");
+    else {
+        auto pathString = OSDynamicCast(OSString, pathSymbol);
         
-        SYSLOG(
-            "gpu_stub",
-            "probe: location in plane: %s",
-            path != NULL ? path : "UNKNOWN");
-    } else
-        DBGLOG(
-            "gpu_stub",
-            "probe: failed to obtain location in plane - ignoring");
+        if (!pathString) DBGLOG("gpu_stub", "probe: ACPIPATH - failed to cast OSObject -> OSString, ignoring");
+        else {
+            const char *path = pathString->getCStringNoCopy();
+            static char *paths[2] = {};
+            
+            constructPaths(path, paths);
+            
+            if (paths[0]) {
+                SYSLOG(
+                    "gpu_stub",
+                    "probe: acpi path: %s",
+                    paths[0]);
+                
+                IOFree(paths[0], strlen(path) / 2);
+            }
+            
+            if (paths[1]) {
+                SYSLOG(
+                    "gpu_stub",
+                    "probe: pci path: %s",
+                    paths[1]);
+                
+                IOFree(paths[1], strlen(path) / 2);
+            }
+        }
+        
+        pathSymbol->release();
+    }
     
-    OSSafeReleaseNULL(locationSymbol);
+    auto parentBridge = OSDynamicCast(IOPCIDevice, pciDevice->getParentEntry(gIODTPlane));
     
-    DBGLOG("gpu_stub", "probe: finalized probe, letting real driver take over");
+    if (!parentBridge) {
+        DBGLOG("gpu_stub", "probe: can't find the parent bridge's IOPCIDevice");
+        return nullptr;
+    }
+    
+    DBGLOG("gpu_stub", "probe: requesting parent bridge rescan");
+    
+    // Mark this device and the parent bridge as needing scanning, then trigger the rescan.
+    //
+    // Thank you, WhateverGreen devs, for saving my ass.
+    pciDevice->kernelRequestProbe(kIOPCIProbeOptionNeedsScan);
+    parentBridge->kernelRequestProbe(kIOPCIProbeOptionNeedsScan | kIOPCIProbeOptionDone);
 
     // Must mark as failed so that the original driver can take over.
     return nullptr;
