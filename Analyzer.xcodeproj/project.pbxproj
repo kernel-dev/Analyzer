@@ -317,7 +317,7 @@
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Lilu.kext/Contents/Resources";
 				INFOPLIST_FILE = Analyzer/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Kernel. All rights reserved.";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.2;
 				MARKETING_VERSION = 1.0;
 				MODULE_NAME = com.KernelWanderers.Analyzer;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
@@ -347,7 +347,7 @@
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Lilu.kext/Contents/Resources";
 				INFOPLIST_FILE = Analyzer/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Kernel. All rights reserved.";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.2;
 				MARKETING_VERSION = 1.0;
 				MODULE_NAME = com.KernelWanderers.Analyzer;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
