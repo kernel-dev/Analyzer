@@ -28,6 +28,7 @@ jobs:
       - name: Lilu Bootstrap
         run: |
           src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/Lilu/master/Lilu/Scripts/bootstrap.sh) && eval "$src" || exit 1
+     
       - run: xcodebuild -jobs 1 -configuration Debug
       - run: xcodebuild -jobs 1 -configuration Release
 
@@ -36,6 +37,7 @@ jobs:
         with:
           name: Artifacts
           path: build/*/*.zip
+          
       - name: Upload to Release
         if: github.event_name == 'release'
         uses: svenstaro/upload-release-action@e74ff71f7d8a4c4745b560a485cc5fdb9b5b999d
@@ -44,23 +46,3 @@ jobs:
           file: build/*/*.zip
           tag: ${{ github.ref }}
           file_glob: true
-
-  analyze-clang:
-    name: Analyze Clang
-    runs-on: macos-latest
-    env:
-      JOB_TYPE: ANALYZE
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/checkout@v3
-        with:
-          repository: acidanthera/MacKernelSDK
-          path: MacKernelSDK
-      - name: CI Bootstrap
-        run: |
-          src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/ocbuild/master/ci-bootstrap.sh) && eval "$src" || exit 1
-      - name: Lilu Bootstrap
-        run: |
-          src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/Lilu/master/Lilu/Scripts/bootstrap.sh) && eval "$src" || exit 1
-      - run: xcodebuild analyze -quiet -scheme Analyzer -configuration Debug CLANG_ANALYZER_OUTPUT=plist-html CLANG_ANALYZER_OUTPUT_DIR="$(pwd)/clang-analyze" && [ "$(find clang-analyze -name "*.html")" = "" ]
-      - run: xcodebuild analyze -quiet -scheme Analyzer -configuration Release CLANG_ANALYZER_OUTPUT=plist-html CLANG_ANALYZER_OUTPUT_DIR="$(pwd)/clang-analyze" && [ "$(find clang-analyze -name "*.html")" = "" ]
