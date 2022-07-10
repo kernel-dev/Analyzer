@@ -18,6 +18,10 @@ class SystemAnalyzer {
 public:
     void init();
     void deinit();
+    void cpu_info();
+    
+private:
+    static SystemAnalyzer *callbackAnal;
 };
 
 #endif /* kern_analyzer_h */
