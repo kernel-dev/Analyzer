@@ -10,6 +10,9 @@
 		1E00A8DE285EBDCB005804C2 /* plugin_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E00A8DD285EBDCB005804C2 /* plugin_start.cpp */; };
 		1E697457285BC0F300C9E53A /* kern_analyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E697456285BC0F300C9E53A /* kern_analyzer.cpp */; };
 		1E697463285BC15A00C9E53A /* kern_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E697462285BC15A00C9E53A /* kern_start.cpp */; };
+		1E9EBBC5287ACC8D009BBF6B /* kern_analyzer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1E697464285BC16F00C9E53A /* kern_analyzer.hpp */; };
+		1EA414EA287A7CDA006BDB13 /* kern_pci_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA414E8287A7CDA006BDB13 /* kern_pci_utils.cpp */; };
+		1EA414EB287A7CDA006BDB13 /* kern_pci_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EA414E9287A7CDA006BDB13 /* kern_pci_utils.hpp */; };
 		1EEB22A428708853001AB022 /* kern_gpu_stub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB22A228708853001AB022 /* kern_gpu_stub.cpp */; };
 		1EEB22A528708853001AB022 /* kern_gpu_stub.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EEB22A328708853001AB022 /* kern_gpu_stub.hpp */; };
 		1EF3D814285EBEFC0084A8AC /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF3D813285EBEFC0084A8AC /* libkmod.a */; };
@@ -23,6 +26,8 @@
 		1E697462285BC15A00C9E53A /* kern_start.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_start.cpp; sourceTree = "<group>"; };
 		1E697464285BC16F00C9E53A /* kern_analyzer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_analyzer.hpp; sourceTree = "<group>"; };
 		1E697467285BC1D800C9E53A /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = usr/lib/libkmod.a; sourceTree = SDKROOT; };
+		1EA414E8287A7CDA006BDB13 /* kern_pci_utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_pci_utils.cpp; sourceTree = "<group>"; };
+		1EA414E9287A7CDA006BDB13 /* kern_pci_utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_pci_utils.hpp; sourceTree = "<group>"; };
 		1EEB22A0287087CF001AB022 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = System/Library/Frameworks/Kernel.framework; sourceTree = SDKROOT; };
 		1EEB22A228708853001AB022 /* kern_gpu_stub.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_gpu_stub.cpp; sourceTree = "<group>"; };
 		1EEB22A328708853001AB022 /* kern_gpu_stub.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_gpu_stub.hpp; sourceTree = "<group>"; };
@@ -65,6 +70,8 @@
 				1E697456285BC0F300C9E53A /* kern_analyzer.cpp */,
 				1E697458285BC0F300C9E53A /* Info.plist */,
 				1EEB22A228708853001AB022 /* kern_gpu_stub.cpp */,
+				1EA414E8287A7CDA006BDB13 /* kern_pci_utils.cpp */,
+				1EA414E9287A7CDA006BDB13 /* kern_pci_utils.hpp */,
 				1EEB22A328708853001AB022 /* kern_gpu_stub.hpp */,
 				1E697462285BC15A00C9E53A /* kern_start.cpp */,
 				1E697464285BC16F00C9E53A /* kern_analyzer.hpp */,
@@ -89,6 +96,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E9EBBC5287ACC8D009BBF6B /* kern_analyzer.hpp in Headers */,
+				1EA414EB287A7CDA006BDB13 /* kern_pci_utils.hpp in Headers */,
 				1EEB22A528708853001AB022 /* kern_gpu_stub.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,6 +172,7 @@
 			files = (
 				1E697457285BC0F300C9E53A /* kern_analyzer.cpp in Sources */,
 				1EEB22A428708853001AB022 /* kern_gpu_stub.cpp in Sources */,
+				1EA414EA287A7CDA006BDB13 /* kern_pci_utils.cpp in Sources */,
 				1E697463285BC15A00C9E53A /* kern_start.cpp in Sources */,
 				1E00A8DE285EBDCB005804C2 /* plugin_start.cpp in Sources */,
 			);
