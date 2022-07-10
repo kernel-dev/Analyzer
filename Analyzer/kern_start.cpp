@@ -8,6 +8,7 @@
 
 #include <Headers/plugin_start.hpp>
 #include <Headers/kern_api.hpp>
+
 #include "kern_analyzer.hpp"
 
 static SystemAnalyzer analyzer;
@@ -28,9 +29,7 @@ PluginConfiguration ADDPR(config)
 {
     xStringify(PRODUCT_NAME),
     parseModuleVersion(xStringify(MODULE_VERSION)),
-    LiluAPI::AllowNormal |
-    LiluAPI::AllowInstallerRecovery |
-    LiluAPI::AllowSafeMode,
+    LiluAPI::AllowNormal | LiluAPI::AllowInstallerRecovery,
     bootargOff,
     arrsize(bootargOff),
     bootargDebug,
@@ -40,6 +39,10 @@ PluginConfiguration ADDPR(config)
     KernelVersion::Tiger,
     KernelVersion::Ventura,
     []() {
+        // FIXME: Lilu attempting to request access
+        // seems to return Error::Disabled, or Error::TooLate,
+        // because I honestly have no idea which of the two
+        // corresponds to error code 6.
         analyzer.init();
     }
 };
