@@ -45,8 +45,11 @@ void constructPaths(const char *path, char *paths[2])
   memcpy(tempPath, path, strlen(path) + 1);
 
     while ( (found = strsep(&tempPath, "@")) != NULL ) {
-        if (strstr(found, "_SB") && strstr(found, "PCI0")) {
-            snprintf(acpiPath, 256, "\\_SB.PCI0");
+        if (strstr(found, "_SB")) {
+            void(strsep(&found, "/"));
+            void(strsep(&found, "/"));
+            
+            snprintf(acpiPath, 256, "\\_SB.%s", found);
             continue;
         }
 
